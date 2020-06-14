@@ -23,10 +23,12 @@ class TaskForm extends React.Component {
 
   onSubmit = (values) => {
     this.props.onSubmit(values);
+    // window.location = 'http://localhost:3000/todolist/chain';
   };
 
   render() {
     return (
+      <div>
       <form onSubmit={ this.props.handleSubmit(this.onSubmit) }>
         { this.renderFields() }
         <Link to={`${this.props.prevUrl}`} className="yellow darken-3 white-text btn-flat">Back</Link>
@@ -35,6 +37,7 @@ class TaskForm extends React.Component {
           <i className="material-icons right">done</i>
         </button>
       </form>
+      </div>
     );
   };
 }

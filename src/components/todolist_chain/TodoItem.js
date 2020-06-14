@@ -18,7 +18,7 @@ class TodoItem extends React.Component {
             <input
               type="checkbox"
               defaultChecked={completed}
-              onChange={() => completeTask(id)}
+              onChange={() => completeTask(parseInt(id))}
             />
             <span>{ completed ? 'Checked' : 'Check' }</span>
           </label>

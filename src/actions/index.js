@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import {
   USER_ACCOUNT,
   USER_ACCOUNT_BALANCE,
@@ -18,10 +16,13 @@ import {
   IPFS_UPLOAD,
   ERROR
 } from './types';
+
+import endpoint from '../api/endpoint';
+import history from '../history';
+
 import ipfs from '../ipfs/ipfs';
 import web3 from '../ethereum/web3';
 import todolist from '../ethereum/todolist';
-import history from '../history';
 
 export const loadUserAccounts = () => async dispatch => {
   try {
@@ -117,9 +118,18 @@ export const createTask = (values) => async dispatch => {
   try {
     const convertedValues = values.title.toString();
     const accounts = await web3.eth.getAccounts();
+    // todolist.methods.createTask(convertedValues)
+    //   .send({ from: accounts[0] })
+    //   .on('confirmation', (confirmationNumber, receipt) => {
+    //     // window.location = 'http://localhost:3000/todolist/chain';
+    //   })
+    //   .on('error', (error, receipt) => {
+    //     dispatch({ type: ERROR, payload: error });
+    //   });
     await todolist.methods.createTask(convertedValues).send({ from: accounts[0] });
-    history.push('/todolist/chain');
     dispatch({ type: CREATE_ITEM, payload: convertedValues });
+    // window.location = 'http://localhost:3000/todolist/chain';
+    history.push('/todolist/chain');
   } catch (error) {
     dispatch({ type: ERROR, payload: error });
   }
@@ -137,14 +147,23 @@ export const completeTask = (id) => async dispatch => {
   }
 };
 
+export const ipfsFileUpload = (file) => async dispatch => {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    let fileHash = null;
+    for await (const result of ipfs.add(file)) {
+      fileHash = result.path;
+    }
+    await todolist.methods.setHash(fileHash).send({ from: accounts[0] });
+    dispatch({ type: IPFS_UPLOAD, payload: fileHash });
+  } catch (error) {
+    dispatch({ type: ERROR, payload: error });
+  }
+};
+
 export const loadTodos = () => async dispatch => {
   try {
-    const config = {
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    };
-    const res = await axios.get('https://jsonplaceholder.typicode.com/todos', config);
+    const res = await endpoint.get('/');
     dispatch({ type: REST_TODOS, payload: res.data });
   } catch (error) {
     dispatch({ type: ERROR, payload: error });
@@ -153,12 +172,7 @@ export const loadTodos = () => async dispatch => {
 
 export const loadTodo = (id) => async dispatch => {
   try {
-    const config = {
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    };
-    const res = await axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`, config);
+    const res = await endpoint.get(`/${id}`);
     dispatch({ type: REST_TODO, payload: res.data });
   } catch (error) {
     dispatch({ type: ERROR, payload: error });
@@ -167,12 +181,7 @@ export const loadTodo = (id) => async dispatch => {
 
 export const completeTodo = (id) => async dispatch => {
   try {
-    const config = {
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    };
-    const res = await axios.get('https://jsonplaceholder.typicode.com/todos', config);
+    const res = await endpoint.get('/');
     res.data.forEach(item => {
       if (item.id === id) {
         item.completed = !item.completed
@@ -188,28 +197,9 @@ export const completeTodo = (id) => async dispatch => {
 
 export const delTodo = (id) => async dispatch => {
   try {
-    const config = {
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    };
-    await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`, config);
+    await endpoint.delete(`/${id}`);
     history.push('/todolist/rest');
     dispatch({ type: DELETE_REST_TODO, payload: id });
-  } catch (error) {
-    dispatch({ type: ERROR, payload: error });
-  }
-};
-
-export const ipfsFileUpload = (file) => async dispatch => {
-  try {
-    const accounts = await web3.eth.getAccounts();
-    let fileHash = null;
-    for await (const result of ipfs.add(file)) {
-      fileHash = result.path;
-    }
-    await todolist.methods.setHash(fileHash).send({ from: accounts[0] });
-    dispatch({ type: IPFS_UPLOAD, payload: fileHash });
   } catch (error) {
     dispatch({ type: ERROR, payload: error });
   }

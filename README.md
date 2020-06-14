@@ -1,28 +1,19 @@
-## Ethereum TodoList DApp using Solidity, Metamask, Truffle, IPFS, React, Redux, Web3, Materialize
+## Ethereum TodoList DApp with Solidity, Metamask, Truffle, IPFS, React, Redux, Web3, Materialize
 
 ## Features
 
-Adding todos to Ethereum blockchain from a redux form
-
-Fetching a list of todos from Ethereum Blockchain
-
-Option to complete a todo
-
-Fetching a list of todos from an external api using REST
-
-Adding todos from an external api to Ethereum Blockchain
-
-Block Explorer for current smart contract deployed
-
-The content of a file is stored on IPFS, and the reference is kept on Ethereum Blockchain
-
-DApp can be deployed on any Ethereum Network
+- Adding todos to Ethereum blockchain from a redux form
+- Fetching a list of todos from Ethereum Blockchain
+- Option to complete a todo
+- Fetching a list of todos from an external api using REST
+- Adding todos from an external api to Ethereum Blockchain
+- Block Explorer for current smart contract deployed
+- The content of a file is stored on IPFS, and the reference is kept on Ethereum Blockchain
+- DApp can be deployed on any Ethereum Network
 
 ## Usage
 
 ### `npm install`
-
-Installs all the modules listed in package.json.
 
 Before deploying or running the application, you need to be sure that all modules from package.json are installed properly.
 
@@ -32,11 +23,11 @@ In the project directory, you can run:
 
 ### `truffle migrate`
 
-Compiles and deploys the contracts on the network specified in the file truffle-config.js  
+Compiles and deploys the smart contract(s) on the network specified in truffle-config.js.  
 
 ### `truffle migrate --reset`
 
-If you want to recompile and redeploy the contracts.
+Recompile and redeploy the smart contract(s) on the network specified in truffle-config.js.
 
 ### `npm start`
 

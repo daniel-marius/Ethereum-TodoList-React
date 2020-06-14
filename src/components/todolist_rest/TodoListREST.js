@@ -1,9 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { loadTodos, completeTodo, delTodo } from '../../actions';
+import {
+  loadTodos,
+  completeTodo,
+  delTodo
+} from '../../actions';
 import TodoItemREST from './TodoItemREST';
 import Spinner from '../utils/Spinner';
+
 import { customStyle, customStyle2 } from '../utils/style';
 
 class TodoListREST extends React.Component {
@@ -28,9 +33,7 @@ class TodoListREST extends React.Component {
         )
       });
     } else {
-      return (
-        <Spinner />
-      );
+      return <Spinner />;
     }
   }
 
@@ -65,4 +68,8 @@ const mapStateToProps = ({ restTodos }) => {
   return { restTodos: Object.values(restTodos) };
 };
 
-export default connect(mapStateToProps, { loadTodos, completeTodo, delTodo })(TodoListREST);
+export default connect(mapStateToProps,
+  { loadTodos,
+    completeTodo,
+    delTodo
+  })(TodoListREST);

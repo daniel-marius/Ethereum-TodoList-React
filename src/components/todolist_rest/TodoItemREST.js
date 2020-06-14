@@ -20,7 +20,7 @@ class TodoItemREST extends React.Component {
             <input
               type="checkbox"
               defaultChecked={completed}
-              onChange={() => completeTodo( id )}
+              onChange={() => completeTodo(parseInt(id))}
             />
             <span>{ completed ? 'Checked' : 'Check' }</span>
           </label>

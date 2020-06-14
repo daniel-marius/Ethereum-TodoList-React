@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Spinner = (props) => {
+const Spinner = () => {
   return (
     <div className="preloader-wrapper big active">
       <div className="spinner-layer spinner-blue">
@@ -51,13 +51,8 @@ const Spinner = (props) => {
         </div>
       </div>
 
-      <p>{ props.message }</p>
     </div>
   );
-};
-
-Spinner.defaultProps = {
-  message: 'Loading...'
 };
 
 export default Spinner;
