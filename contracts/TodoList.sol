@@ -55,12 +55,12 @@ contract TodoList {
 
     function randomBytes() public view returns (bytes32) {
         // Generate random bytes
-        return bytes32(keccak256(abi.encodePacked(block.difficulty, block.timestamp, tasks[taskCount].content)));
+        return keccak256(abi.encodePacked(blockhash(tasks[taskCount].id + 100), tasks[taskCount].completed, tasks[taskCount].content));
     }
 
     function randomIndex() private view returns (uint) {
         // Generate random index
-        return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, tasks[taskCount].content)));
+        return uint(keccak256(abi.encodePacked(blockhash(tasks[taskCount].id + 100), tasks[taskCount].completed, tasks[taskCount].content)));
     }
 
     function getTaskCount() public view returns (uint) {
